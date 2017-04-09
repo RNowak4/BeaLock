@@ -1,7 +1,14 @@
 package com.wpam.security;
 
-/**
- * Created by radek on 07.04.17.
- */
+import lombok.Getter;
+
+@Getter
 public class UserToAuthenticate {
+    private final String username;
+    private final String password;
+
+    public UserToAuthenticate(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
