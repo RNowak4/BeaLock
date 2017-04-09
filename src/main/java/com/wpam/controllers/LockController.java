@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+// TODO usuniecie tego kontrolera
 @RestController(value = "/lock")
 public class LockController {
     private BeaconService beaconService;
