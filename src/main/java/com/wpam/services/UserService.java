@@ -27,8 +27,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByLogin(username).get();
     }
 
-    public void register(String login, String password, String email) throws UserAlreadyExistsException {
-        final User user = new User(login, passwordEncoder.encode(password), email);
+    public void register(final String login, final String password, final String email, final String msisdn)
+            throws UserAlreadyExistsException {
+        final User user = new User(login, passwordEncoder.encode(password), email, msisdn);
         final Optional<User> foundUser = userRepository.findUserByLogin(login);
 
         if (foundUser.isPresent()) {

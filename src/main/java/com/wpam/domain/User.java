@@ -25,14 +25,15 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private String msisdn;
-//    @Enumerated(EnumType.STRING)
+    //    @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = GrantedAuthority.class, fetch = FetchType.EAGER)
     private Collection<GrantedAuthority> credentials;
 
-    public User(String login, String encode, String email) {
+    public User(String login, String encode, String email, final String msisdn) {
         this.login = login;
         this.password = encode;
         this.email = email;
+        this.msisdn = msisdn;
     }
 
     public User(String login, String encode, Collection<GrantedAuthority> credentials) {

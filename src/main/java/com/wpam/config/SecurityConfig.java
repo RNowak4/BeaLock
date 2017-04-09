@@ -31,7 +31,8 @@ public class SecurityConfig {
                     .permitAll()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/user/**").authenticated();
+                    .antMatchers("/user/**").permitAll()
+                    .antMatchers("/beacon/**").authenticated();
         }
 
     }
@@ -55,8 +56,11 @@ public class SecurityConfig {
                     .and()
                     .authorizeRequests()
                     .antMatchers("/lock/**").permitAll()
-                    .antMatchers("/test/**").permitAll()
-                    .anyRequest().authenticated();
+                    .antMatchers("/test/**").authenticated()
+                    .anyRequest().authenticated()
+                    .and().x509()
+                    .subjectPrincipalRegex("CN=(.*?)(?:,|$)")
+                    .userDetailsService(userDetailsService());
         }
 
     }
