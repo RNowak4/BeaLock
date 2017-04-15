@@ -1,7 +1,11 @@
 package com.wpam.config;
 
-/**
- * Created by radek on 06.04.17.
- */
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Import({ChildServerSecurityConfig.class, UserSecurityConfig.class})
 public class SecurityConfig {
 }
