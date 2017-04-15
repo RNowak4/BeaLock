@@ -2,6 +2,7 @@ package com.wpam.services;
 
 import com.wpam.domain.Beacon;
 import com.wpam.domain.BeaconStatus;
+import com.wpam.domain.ChildServer;
 import com.wpam.domain.User;
 import com.wpam.domain.repositories.BeaconRepository;
 import com.wpam.exceptions.BeaconAlreadyExistsException;
@@ -11,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 public class BeaconService {
     private BeaconRepository beaconRepository;
+    private ChildServerService childServerService;
     private UserService userService;
 
     @Autowired
-    public BeaconService(BeaconRepository beaconRepository, UserService userService) {
+    public BeaconService(BeaconRepository beaconRepository, ChildServerService childServerService, UserService userService) {
         this.beaconRepository = beaconRepository;
+        this.childServerService = childServerService;
         this.userService = userService;
     }
 
@@ -27,7 +31,9 @@ public class BeaconService {
         return beaconRepository.findBeaconByName(name);
     }
 
-    public void addBeacon(final Beacon beacon, final Principal principal) throws BeaconAlreadyExistsException {
+    public void addBeacon(final String beaconName, final Principal principal) throws BeaconAlreadyExistsException {
+        final Beacon beacon = beaconRepository.findBeaconByName(beaconName);
+
         if (beaconAlreadyExists(beacon)) {
             throw new BeaconAlreadyExistsException();
         }
@@ -60,6 +66,14 @@ public class BeaconService {
     }
 
     private boolean beaconAlreadyExists(final Beacon beacon) {
-        return beaconRepository.findBeaconByName(beacon.getName()) != null;
+        return beacon != null && beaconRepository.findBeaconByName(beacon.getName()) != null;
+    }
+
+    public void lockBeacon(final String beaconName, final Principal principal) {
+        final List<ChildServer> childServers = childServerService.getAllServers();
+
+        for (final ChildServer childServer : childServers) {
+            // TODO make requests
+        }
     }
 }

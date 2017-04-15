@@ -21,4 +21,5 @@ public class ChildServer {
     private Long id;
     private String ip;
     private String port;
+    private boolean isActive;
 }

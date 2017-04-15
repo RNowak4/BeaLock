@@ -26,4 +26,15 @@ public class UserController {
 
         userService.register(userName, password, email, msisdn);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/user/test")
+    public String test() {
+        try {
+            userService.register("asd", "asd", "asd", "333");
+        }
+        catch (Exception e)  {
+        }
+
+        return "User test ok";
+    }
 }
