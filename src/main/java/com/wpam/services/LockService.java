@@ -3,7 +3,7 @@ package com.wpam.services;
 import com.wpam.domain.Beacon;
 import com.wpam.domain.ChildServer;
 import com.wpam.domain.repositories.ChildServerRepository;
-import com.wpam.utils.IpUtils;
+import com.wpam.utils.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,13 +15,13 @@ import java.util.concurrent.Executors;
 @Service
 public class LockService {
     private ChildServerRepository childServerRepository;
-    private IpUtils ipUtils;
+    private UrlUtils urlUtils;
     private static RestTemplate template = new RestTemplate();
 
     @Autowired
-    public LockService(ChildServerRepository childServerRepository, IpUtils ipUtils) {
+    public LockService(ChildServerRepository childServerRepository, UrlUtils urlUtils) {
         this.childServerRepository = childServerRepository;
-        this.ipUtils = ipUtils;
+        this.urlUtils = urlUtils;
     }
 
     public void setLockOnBeacon(final Beacon beacon) {
@@ -30,7 +30,7 @@ public class LockService {
 
         for (final ChildServer childServer : servers) {
             exec.submit(() -> {
-                final String ipAddress = ipUtils.getIpAddress(childServer);
+                final String ipAddress = urlUtils.getHttpsUrl(childServer);
 
 //                template.postForEntity(ipAddress + "/" + beacon.getName());
             });
@@ -45,7 +45,7 @@ public class LockService {
 
         for (final ChildServer childServer : servers) {
             exec.submit(() -> {
-                final String ipAddress = ipUtils.getIpAddress(childServer);
+                final String ipAddress = urlUtils.getHttpsUrl(childServer);
 
                 template.delete(ipAddress + "/" + beacon.getName());
             });

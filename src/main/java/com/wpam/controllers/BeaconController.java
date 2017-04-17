@@ -22,13 +22,6 @@ public class BeaconController {
         this.beaconService = beaconService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/beacon/lock")
-    public void lockBeacon(@RequestParam("beaconName") final String beaconName,
-                           final Principal principal) throws BeaconAlreadyExistsException {
-
-        beaconService.lockBeacon(beaconName, principal);
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/beacon")
     public void addBeacon(@RequestParam("beaconName") final String beaconName,
                           final Principal principal) throws BeaconAlreadyExistsException {
@@ -45,4 +38,5 @@ public class BeaconController {
 
         beaconService.removeBeacon(beacon, principal);
     }
+
 }
