@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BealockApplication {
-    private final static String KEYSTORE_LOCATION = "/home/pi/keys/server.jks";
+    private final static String KEYSTORE_LOCATION = "/home/radek/keys/server.jks";
     private final static String KEYSTORE_PASSWORD = "s3cr3t";
 
     static {

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-// TODO usuniecie tego kontrolera
 @RestController(value = "/lock")
 public class LockController {
     private BeaconService beaconService;
@@ -24,12 +23,18 @@ public class LockController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/lock", method = RequestMethod.GET)
-    public String getLock() {
-        return "LOCK/aa";
+    @RequestMapping(method = RequestMethod.DELETE, value = "/lock/{beaconName}")
+    public void deleteLock(@PathVariable(name = "beaconName") final String beaconName) {
+        final Beacon beacon = beaconService.getBeaconByName(beaconName);
+
+        if (beacon == null) {
+            throw new RuntimeException("No such beacon!");
+        }
+
+        lockService.deleteLockOnBeacon(beacon);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/{beaconName}")
+    @RequestMapping(method = RequestMethod.POST, path = "/lock/{beaconName}")
     public void setLock(@PathVariable(name = "beaconName") final String beaconName) {
         final Beacon beacon = beaconService.getBeaconByName(beaconName);
 
