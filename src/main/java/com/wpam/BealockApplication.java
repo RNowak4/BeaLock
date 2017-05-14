@@ -2,10 +2,9 @@ package com.wpam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class BealockApplication {
     private final static String KEYSTORE_LOCATION = "/home/radek/keys/server.jks";
     private final static String KEYSTORE_PASSWORD = "s3cr3t";

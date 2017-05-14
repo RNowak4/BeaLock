@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -24,16 +26,15 @@ public class User implements UserDetails {
     private String login;
     private String password;
     private String email;
-    private String msisdn;
     //    @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = GrantedAuthority.class, fetch = FetchType.EAGER)
-    private Collection<GrantedAuthority> credentials;
+    private Collection<GrantedAuthority> credentials = new ArrayList<>();
 
-    public User(String login, String encode, String email, final String msisdn) {
+    public User(String login, String encode, String email) {
         this.login = login;
         this.password = encode;
         this.email = email;
-        this.msisdn = msisdn;
+        this.credentials.add(new SimpleGrantedAuthority("USER"));
     }
 
     public User(String login, String encode, Collection<GrantedAuthority> credentials) {

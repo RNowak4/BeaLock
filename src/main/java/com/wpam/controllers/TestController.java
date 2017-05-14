@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-@RestController(value = "/test")
+@RestController(value = "/user/test")
 public class TestController {
     private RestTemplate template = new RestTemplate();
 
-    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    @RequestMapping(method = RequestMethod.GET, value = "/user/test")
     public String test() {
         return "Test OK!";
     }

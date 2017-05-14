@@ -41,7 +41,7 @@ public class ChildServerSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.requestMatcher(request -> {
             final String url = request.getServletPath();
-            return !(url.startsWith("/user"));
+            return TomcatConfig.USER_URLS.stream().noneMatch(userUrl -> userUrl.startsWith(url));
         });
 
         http
