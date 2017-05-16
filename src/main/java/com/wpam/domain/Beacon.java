@@ -1,5 +1,6 @@
 package com.wpam.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Beacon {
     @Id
     private String name;
     @ManyToOne
+    @JsonIgnore
     private User user;
     private BeaconStatus status;
 }

@@ -33,7 +33,7 @@ public class BeaconController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/beacon")
     public void addBeacon(@RequestParam("beaconName") final String beaconName,
-                          final Principal principal) throws BeaconAlreadyExistsException {
+                          final Principal principal) throws BeaconAlreadyExistsException, NoSuchUserException {
 
         beaconService.addBeacon(beaconName, principal);
     }

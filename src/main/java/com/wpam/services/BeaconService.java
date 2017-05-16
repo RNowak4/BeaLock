@@ -31,14 +31,17 @@ public class BeaconService {
         return beaconRepository.findBeaconByName(name);
     }
 
-    public void addBeacon(final String beaconName, final Principal principal) throws BeaconAlreadyExistsException {
-        final Beacon beacon = beaconRepository.findBeaconByName(beaconName);
+    public void addBeacon(final String beaconName, final Principal principal) throws BeaconAlreadyExistsException, NoSuchUserException {
+        final Beacon beacon = new Beacon();
+        beacon.setName(beaconName);
 
         if (beaconAlreadyExists(beacon)) {
             throw new BeaconAlreadyExistsException();
         }
 
-        final User user = userService.getUserByLogin(principal.getName()).get();
+        final User user = userService.getUserByLogin(principal.getName())
+                .map(foundUser -> foundUser)
+                .orElseThrow(NoSuchUserException::new);
         beacon.setStatus(BeaconStatus.NOT_LOCKED);
         beacon.setUser(user);
 

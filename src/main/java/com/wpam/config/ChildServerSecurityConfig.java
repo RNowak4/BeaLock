@@ -41,14 +41,13 @@ public class ChildServerSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.requestMatcher(request -> {
             final String url = request.getServletPath();
-            return TomcatConfig.USER_URLS.stream().noneMatch(userUrl -> userUrl.startsWith(url));
+            return TomcatConfig.USER_URLS.stream().noneMatch(userUrl -> url.startsWith(userUrl));
         });
 
         http
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authUnauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(STATELESS).and()
-                .formLogin().permitAll().usernameParameter("login").passwordParameter("password")
+                .sessionManagement().sessionCreationPolicy(STATELESS)
                 .and().authorizeRequests()
                 .antMatchers("/test/**").authenticated()
                 .anyRequest().authenticated()
