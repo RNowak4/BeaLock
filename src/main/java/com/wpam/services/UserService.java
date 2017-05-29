@@ -5,7 +5,6 @@ import com.wpam.domain.repositories.UserRepository;
 import com.wpam.exceptions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(final String username) {
         return userRepository.findUserByLogin(username).get();
     }
 
@@ -39,7 +38,14 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public Optional<User> getUserByLogin(final String login) {
+    Optional<User> getUserByLogin(final String login) {
         return userRepository.findUserByLogin(login);
+    }
+
+    public void setUserAppToken(final String appToken, final String userName) {
+        final User user = loadUserByUsername(userName);
+        user.setToken(appToken);
+
+        userRepository.save(user);
     }
 }

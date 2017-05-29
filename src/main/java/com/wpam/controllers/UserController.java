@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController(value = "/user")
 public class UserController {
     private UserService userService;
@@ -24,5 +26,11 @@ public class UserController {
             throws UserAlreadyExistsException {
 
         userService.register(userName, password, email);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    public void setUserAppToken(@RequestParam("appToken") final String appToken, final Principal principal) {
+
+        userService.setUserAppToken(appToken, principal.getName());
     }
 }

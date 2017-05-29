@@ -26,6 +26,7 @@ public class User implements UserDetails {
     private String login;
     private String password;
     private String email;
+    private String token;
     //    @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = GrantedAuthority.class, fetch = FetchType.EAGER)
     private Collection<GrantedAuthority> credentials = new ArrayList<>();
