@@ -42,10 +42,7 @@ public class BeaconController {
     public void removeBeacon(@RequestParam("beaconName") final String beaconName,
                              final Principal principal)
             throws BeaconAlreadyExistsException, UserNotOwningBeaconException, NoSuchBeaconException, NoSuchUserException {
-        // TODO poprawic styl
-        final Beacon beacon = new Beacon();
-        beacon.setName(beaconName);
 
-        beaconService.removeBeacon(beacon, principal);
+        beaconService.removeBeacon(beaconName, principal);
     }
 }

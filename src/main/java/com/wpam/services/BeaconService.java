@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,7 +30,9 @@ public class BeaconService {
     }
 
     public Beacon getBeaconByName(final String name) {
-        return beaconRepository.findBeaconByName(name);
+        return beaconRepository.findBeaconByName(name)
+                .map(b -> b)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public void addBeacon(final String beaconName, final Principal principal) throws BeaconAlreadyExistsException, NoSuchUserException {
@@ -48,8 +52,12 @@ public class BeaconService {
         beaconRepository.save(beacon);
     }
 
-    public void removeBeacon(final Beacon beacon, final Principal principal)
+    public void removeBeacon(final String beaconName, final Principal principal)
             throws BeaconAlreadyExistsException, NoSuchBeaconException, UserNotOwningBeaconException, NoSuchUserException {
+
+        final Beacon beacon = beaconRepository.findBeaconByName(beaconName)
+                .map(b -> b)
+                .orElseThrow(NoSuchElementException::new);
         if (!beaconAlreadyExists(beacon)) {
             throw new NoSuchBeaconException();
         }
@@ -58,8 +66,7 @@ public class BeaconService {
             throw new UserNotOwningBeaconException();
         }
 
-        final Beacon beaconToDelete = beaconRepository.findBeaconByName(beacon.getName());
-        beaconRepository.delete(beaconToDelete);
+        beaconRepository.delete(beacon);
     }
 
     private boolean userOwnsBeacon(final Beacon beacon, final Principal principal) throws NoSuchUserException {
@@ -70,7 +77,7 @@ public class BeaconService {
     }
 
     private boolean beaconAlreadyExists(final Beacon beacon) {
-        return beacon != null && beaconRepository.findBeaconByName(beacon.getName()) != null;
+        return beacon != null && beaconRepository.findBeaconByName(beacon.getName()).isPresent();
     }
 
     public List<String> getUserBeacons(final Principal principal) {
@@ -79,6 +86,6 @@ public class BeaconService {
         return user.map(foundUser -> beaconRepository.findBeaconsByUser(foundUser).stream()
                 .map(Beacon::getName)
                 .collect(Collectors.toList()))
-                .orElse(null);
+                .orElse(Collections.emptyList());
     }
 }

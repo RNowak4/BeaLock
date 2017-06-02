@@ -32,7 +32,7 @@ public class LockService {
             exec.submit(() -> {
                 final String ipAddress = urlUtils.getHttpsUrl(childServer);
 
-                template.postForEntity(ipAddress + "/" + beacon.getName(), null, Void.class);
+                template.postForEntity(ipAddress + "/lock/" + beacon.getName(), null, Void.class);
             });
         }
 
@@ -47,7 +47,7 @@ public class LockService {
             exec.submit(() -> {
                 final String ipAddress = urlUtils.getHttpsUrl(childServer);
 
-                template.delete(ipAddress + "/" + beacon.getName());
+                template.delete(ipAddress + "/lock/" + beacon.getName());
             });
         }
 
